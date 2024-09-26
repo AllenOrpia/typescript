@@ -2,7 +2,7 @@
 
 // Code below is an example of type Aliases
 type Combinable = number | string;
-type ConversionDescriptor = 'as number' | 'as-text';
+type ConversionDescriptor = 'as-number' | 'as-text';
 
 //  Code below is the use of UNION TYPES
 
