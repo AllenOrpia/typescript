@@ -41,5 +41,19 @@ Typescript is a Javascript Superset
 
 ? Type Inference
     * Built in feature that typescript tries its best to understand which type we have in a certain variable or constant
-    *
+
+
+? What's Object-Oriented Programming (OOP)?
+    * Work with (real-life) entities in your Code
+
+? Classes and Instances
+    ! Objects
+        * The things you work with in code
+        * Instances of classes (=based on classes)
+        * Class-based creation is an alternative to using object literals
+    ! Classes
+        * Blueprints for objects (theoretical definition)
+        * Define how objects look like, which properties and methods they have
+        * Classes make creation of multiple, similar objects much easier
+        
 */ 

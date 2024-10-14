@@ -4,7 +4,7 @@ function add(n1, n2) {
     return n1 + n2;
 }
 // Code below, typescript infers that the return type is void
-function printResult(num) {
+function printRes(num) {
     console.log(`Result: ${num}`);
 }
 // function printResult(num: number): void {
@@ -14,7 +14,7 @@ function printResult(num) {
 // function printResult(num: number): undefined {
 //     console.log(`Result: ${num}`)
 // }
-printResult(add(5, 12));
+printRes(add(5, 12));
 // Code below is the use of FUNCTION TYPES
 let combineValues;
 combineValues = add;

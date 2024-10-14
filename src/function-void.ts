@@ -8,7 +8,7 @@ function add(n1: number, n2: number): number {
 
 
 // Code below, typescript infers that the return type is void
-function printResult(num: number) {
+function printRes(num: number) {
     console.log(`Result: ${num}`)
 }
 
@@ -22,7 +22,7 @@ function printResult(num: number) {
 // function printResult(num: number): undefined {
 //     console.log(`Result: ${num}`)
 // }
-printResult(add(5, 12));
+printRes(add(5, 12));
 
 
 // Code below is the use of FUNCTION TYPES
