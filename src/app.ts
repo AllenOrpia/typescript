@@ -22,31 +22,56 @@
 // user1.greet('Hi there I am ')
 
 
-interface Greetable {
-    name: string;
+interface Named {
+    readonly name?: string
+    outputName?: string;
+}
 
+
+interface Greetable extends Named {
     greet(phrase: string): void;
 }
 
 class Person implements Greetable {
-    name: string;
+    name?: string;
     age = 30
 
-    constructor(name: string) {
-        this.name = name;
+    constructor(name?: string) {
+        if (name) {
+            this.name = name
+        }
     }
 
     greet(phrase: string) {
-        console.log(phrase + ' ' + this.name)
+        if (this.name) {
+            console.log(phrase + ' ' + this.name)
+        } else {
+            console.log('Hi')
+        }
     }
 }
 
 let user1: Greetable;
-user1 = {
-    name: 'Max',
-    greet(phrase: string) {
-        console.log(phrase + ' ' + this.name);
-    }
+
+user1 = new Person()
+user1.greet('Hi there I am ')
+console.log(user1)
+
+/* 
+    ! Why interfaces ? 
+        * 
+    ! Interfaces will not get compiled 
+    ! Interfaces will not be translated or end up in JS files, its only a typescript feature
+    ! Interfaces are only used during compilation to check your code
+*/
+
+
+interface AddFn {
+    (a: number, b: number): number;
 }
 
-user1.greet('Hi there I am ')
+let add: AddFn;
+
+add = (n1: number, n2: number) => {
+    return n1 + n2
+}
