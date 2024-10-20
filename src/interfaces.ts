@@ -70,8 +70,9 @@ interface AddFn {
     (a: number, b: number): number;
 }
 
-let add: AddFn;
+let add3: AddFn;
 
-add = (n1: number, n2: number) => {
+add3 = (n1: number, n2: number) => {
     return n1 + n2
 }
+
