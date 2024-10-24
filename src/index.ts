@@ -54,5 +54,12 @@ Typescript is a Javascript Superset
         * Blueprints for objects (theoretical definition)
         * Define how objects look like, which properties and methods they have
         * Classes make creation of multiple, similar objects much easier
+
+
+? Generics
+    ! What are generics?
+        * Is a type that is connected with some other type
+        * Gives flexibility with type safety
+    
         
 */
