@@ -60,6 +60,13 @@ Typescript is a Javascript Superset
     ! What are generics?
         * Is a type that is connected with some other type
         * Gives flexibility with type safety
-    
+
+? Decorators
+    ! Great for Meta-Programming
+    ! What are decorators?
+    ! Decorators execute bottom up
+        * The lowest decorater in code executes first then the one on top it runs
+        * However they are created similarly like in JS, from top to bottom or first line first
+    ! Decorators only execute when a class is defined
         
 */

@@ -1,96 +1,100 @@
-// const names: Array<string | number> = []; // similar to string[] or array of strings
+// ! Decorators are usually created with uppercase
+// ! Decorators execute when classes are defined not when they are instanciated
+// function Logger(constructor: Function) {
+//     console.log('Logging....');
+//     console.log(constructor)
+// }
 
-// // ! Promise type
-
-// const promise: Promise<string> = new Promise( (resolve, reject) => {
-//     setTimeout( () => {
-//         resolve('This is done')
-//     }, 2000)
-// });
-
-// promise.then( data => {
-//     data.split(' ')
-// })
-
-// ! Creating Our Own Generic
-
-function merge<T extends object, U extends object>(objA: T, objB: U) {
-  return Object.assign(objA, objB);
+function Logger(logString: string) {
+  return function (constructor: Function) {
+    console.log(logString);
+    console.log(constructor);
+  };
 }
 
-const mergedObJ = merge({ name: "Allon" }, { age: 26 });
-
-interface Lengthy {
-  length: number;
+function WithTemplate(template: string, hookId: string) {
+  return function<T extends { new(...args: any[]): {name:string} } > (originalConstructor: T) {
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        super();
+        const hookEl = document.querySelector(`#${hookId}`);
+        if (hookEl) {
+          hookEl.innerHTML = template;
+          hookEl.querySelector("h1")!.textContent = this.name;
+        }
+      }
+    };
+  };
 }
 
-function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
-  let descriptionText = "Got no value";
+// @Logger('Logging-Person')// Special identifier
+@WithTemplate("<h1>My person Object</h1>", "app")
+class Person2 {
+  name = "Allon";
 
-  if (element.length > 0) {
-    descriptionText = "Got" + element.length + " elements.";
-  } else {
-    descriptionText = "Got 0 elements or less";
+  constructor() {
+    console.log("Creating person object");
   }
-
-  return [element, descriptionText];
 }
 
-console.log(countAndDescribe("Hi there"));
+const pers = new Person2();
+console.log(pers);
 
-function extractAndConvert<T extends object, U extends keyof T>(
-  obj: T,
-  key: U
+// ---
+
+function Log(target: any, propertyName: string) {
+  console.log("Property decorator!!");
+  console.log(target, propertyName);
+}
+
+function Log2(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log("Accesor Decorator!");
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+// ? Method Decorator
+function Log3(
+  target: any,
+  name: string | Symbol,
+  descriptor: PropertyDescriptor
 ) {
-  return obj[key];
+  console.log("Method Decorator");
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
 }
 
-class DataStorage<T> {
-  private data: T[] = [];
-
-  addItem(item: T) {
-    this.data.push(item);
-  }
-
-  removeItem(item: T) {
-    this.data.splice(this.data.indexOf(item, 1));
-  }
-
-  getItems() {
-    return [...this.data];
-  }
+// ? Parametrer Decorator
+function Log4(target: any, name: string | Symbol, position: number) {
+  console.log("Parameter Decorator");
+  console.log(target);
+  console.log(name);
+  console.log(position);
 }
 
-const textStorage = new DataStorage<string>();
-textStorage.addItem("Max");
-textStorage.addItem("Allon");
-textStorage.removeItem("Max");
-console.log(textStorage.getItems());
-
-const numberStorage = new DataStorage<number>();
-
-const objStorage = new DataStorage<object>();
-
-interface CourseGoal {
+class Product {
+  @Log
   title: string;
-  description: string;
-  completeUntil: Date;
+  private _price: number;
+
+  @Log2
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    } else {
+      throw new Error("Invalid price");
+    }
+  }
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  @Log3
+  getPriceWithTax(@Log4 tax: number) {
+    return this._price * (1 + tax);
+  }
 }
-
-function createCourseGoal(
-  title: string,
-  description: string,
-  date: Date
-): CourseGoal {
-  let courseGoal: Partial<CourseGoal> = {};
-  courseGoal.title = title;
-  courseGoal.description = description;
-  courseGoal.completeUntil = date;
-
-  return courseGoal as CourseGoal
-}
-
-
-const names: Readonly<string[]> = ['Allon', 'Bacon', 'Biscuit'];
-names.push('Yoh');
-names.pop();

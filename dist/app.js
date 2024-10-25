@@ -1,86 +1,100 @@
 "use strict";
-/*
-    ? Intersection Types
-        * Intersection types allow us to combine other types
-*/
-var _a;
-const e1 = {
-    name: "All9on",
-    privileges: ["create-server"],
-    startDate: new Date(),
+// ! Decorators are usually created with uppercase
+// ! Decorators execute when classes are defined not when they are instanciated
+// function Logger(constructor: Function) {
+//     console.log('Logging....');
+//     console.log(constructor)
+// }
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-function addd(a, b) {
-    if (typeof a === "string" || typeof b === "string") {
-        return a.toString() + b.toString();
-    }
-    return a + b;
-}
-const result = addd('allon' + 'yoh');
-result.split(' ');
-// ! Optional Chaining
-const fetchedUserData = {
-    id: 'ulk',
-    name: 'Allon',
-    job: { title: 'CEO', description: 'My own company' }
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 };
-console.log((_a = fetchedUserData === null || fetchedUserData === void 0 ? void 0 : fetchedUserData.job) === null || _a === void 0 ? void 0 : _a.title);
-function printEmployeeInformation(emp) {
-    console.log("Name" + emp.name);
-    // ! Example of typeguard
-    if ("privilenges" in emp) {
-        console.log("Privileges " + emp.privilenges);
-    }
-    if ("startDate" in emp) {
-        console.log(emp.startDate);
-    }
-    printEmployeeInformation({
-        name: "Allon",
-        startDate: new Date(),
-    });
+function Logger(logString) {
+    return function (constructor) {
+        console.log(logString);
+        console.log(constructor);
+    };
 }
-class Car {
-    drive() {
-        console.log("Driving");
-    }
-    loadCargo(amount) {
-        console.log("Loading cargo" + amount);
-    }
+function WithTemplate(template, hookId) {
+    return function (originalConstructor) {
+        return class extends originalConstructor {
+            constructor(..._) {
+                super();
+                const hookEl = document.querySelector(`#${hookId}`);
+                if (hookEl) {
+                    hookEl.innerHTML = template;
+                    hookEl.querySelector("h1").textContent = this.name;
+                }
+            }
+        };
+    };
 }
-const v1 = new Car();
-const v2 = new Truck();
-function useVehicle(vehicle) {
-    vehicle.drive();
-    if ("loadCargo" in vehicle) {
-        vehicle.loadCargo(1000);
+// @Logger('Logging-Person')// Special identifier
+let Person2 = class Person2 {
+    constructor() {
+        this.name = "Allon";
+        console.log("Creating person object");
     }
-    // Can Also use
-    if (vehicle instanceof Truck) {
-        vehicle.loadCargo(1000);
-    }
-}
-useVehicle(v1);
-useVehicle(v2);
-function moveAnimal(animal) {
-    let speed;
-    switch (animal.type) {
-        case "bird":
-            speed = animal.flyingSpeed;
-            break;
-        case "horse":
-            speed = animal.runningSpeed;
-    }
-    console.log("Moving at speed: " + speed);
-}
-moveAnimal({
-    type: "bird",
-    flyingSpeed: 10,
-});
-// ! Type Casting
-// const userInputElement = <HTMLInputElement>document.querySelector('#user-input')!;
-const userInputElement = document.querySelector("#user-input");
-userInputElement.value = "Hi there";
-const errorBag = {
-    email: "Not a valid email",
-    username: "Must start with a capital character!",
 };
-// ! Function Overloads
+Person2 = __decorate([
+    WithTemplate("<h1>My person Object</h1>", "app")
+], Person2);
+const pers = new Person2();
+console.log(pers);
+// ---
+function Log(target, propertyName) {
+    console.log("Property decorator!!");
+    console.log(target, propertyName);
+}
+function Log2(target, name, descriptor) {
+    console.log("Accesor Decorator!");
+    console.log(target);
+    console.log(name);
+    console.log(descriptor);
+}
+// ? Method Decorator
+function Log3(target, name, descriptor) {
+    console.log("Method Decorator");
+    console.log(target);
+    console.log(name);
+    console.log(descriptor);
+}
+// ? Parametrer Decorator
+function Log4(target, name, position) {
+    console.log("Parameter Decorator");
+    console.log(target);
+    console.log(name);
+    console.log(position);
+}
+class Product {
+    set price(val) {
+        if (val > 0) {
+            this._price = val;
+        }
+        else {
+            throw new Error("Invalid price");
+        }
+    }
+    constructor(t, p) {
+        this.title = t;
+        this._price = p;
+    }
+    getPriceWithTax(tax) {
+        return this._price * (1 + tax);
+    }
+}
+__decorate([
+    Log
+], Product.prototype, "title", void 0);
+__decorate([
+    Log2
+], Product.prototype, "price", null);
+__decorate([
+    Log3,
+    __param(0, Log4)
+], Product.prototype, "getPriceWithTax", null);
