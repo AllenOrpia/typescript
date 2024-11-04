@@ -98,3 +98,56 @@ __decorate([
     Log3,
     __param(0, Log4)
 ], Product.prototype, "getPriceWithTax", null);
+const registeredValidators = {};
+function Required(target, propName) {
+    registeredValidators[target.constructor.name] = {
+        [propName]: ['required']
+    };
+}
+function PositiveNumber(target, propName) {
+    registeredValidators[target.constructor.name] = {
+        [propName]: ['positive']
+    };
+}
+function validate(obj) {
+    const obcValidatorConfig = registeredValidators[obj.constructor.name];
+    if (!obcValidatorConfig) {
+        return true;
+    }
+    for (const prop in obcValidatorConfig) {
+        for (const validator of obcValidatorConfig[prop]) {
+            switch (validator) {
+                case 'required':
+                    return !!obj[prop];
+                case 'positive':
+                    return obj[prop] > 0;
+            }
+        }
+    }
+    return true;
+}
+class Course {
+    constructor(t, p) {
+        this.title = t;
+        this.price = p;
+    }
+}
+__decorate([
+    Required
+], Course.prototype, "title", void 0);
+__decorate([
+    PositiveNumber
+], Course.prototype, "price", void 0);
+const courseForm = document.querySelector('form');
+courseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const titleEl = document.querySelector('#title');
+    const priceEl = document.querySelector('#price');
+    const title = titleEl.value;
+    const price = +priceEl.value;
+    const createdCourse = new Course(title, price);
+    if (!validate(createdCourse)) {
+        alert('Invalid input, please try again');
+    }
+    console.log(createdCourse);
+});
